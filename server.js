@@ -8,7 +8,7 @@ const logger = require('morgan');
 const cors = require('cors');
 
 //Importar rutas
-//const users = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 
 const port = process.env.PORT || 3000;
@@ -23,6 +23,9 @@ app.use(cors());
 app.disable('x-powered-by');
 
 app.set('port',port);
+
+//Llamado a las rutas
+userRoutes(app);
 
 server.listen(3000,'192.168.200.9' || 'localhost', function(){
     console.log('Aplicación JuviExpress Backend '+process.pid+' iniciada...')
