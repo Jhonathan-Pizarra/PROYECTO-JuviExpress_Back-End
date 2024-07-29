@@ -7,6 +7,7 @@ const server = http.createServer(app);
 const logger = require('morgan');
 const cors = require('cors');
 const passport = require('passport');
+const multer = require('multer');
 
 //Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -30,8 +31,13 @@ app.disable('x-powered-by');
 
 app.set('port',port);
 
+const upload = multer({
+    storage: multer.memoryStorage()
+
+});
+
 //Llamado a las rutas
-userRoutes(app);
+userRoutes(app, upload);
 
 server.listen(3000,'192.168.200.9' || 'localhost', function(){
     console.log('Aplicación JuviExpress Backend '+process.pid+' iniciada...')
