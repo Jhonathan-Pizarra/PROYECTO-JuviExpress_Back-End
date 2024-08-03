@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const User = {};
 
 User.findById = (id, result) => {
+    /*
     const sql = `
         SELECT
             id,
@@ -17,6 +18,37 @@ User.findById = (id, result) => {
         WHERE
             id = ?
     `;
+    */
+    const sql = `
+        SELECT
+            U.id,
+            U.email,
+            U.name,
+            U.lastname,
+            U.phone,
+            U.image,
+            U.password,
+            json_arrayagg(
+                json_object(
+                    'id', CONVERT(R.id, char),
+                    'name', R.name,
+                    'image', R.image,
+                    'route', R.route)
+            ) as roles
+        FROM 
+            users as U
+        INNER JOIN
+            user_has_roles as UHR
+        ON
+            UHR.id_user = U.id
+        INNER JOIN
+            roles as R
+        ON 
+            UHR.id_rol = R.id
+        WHERE
+            id = ?
+        group by
+            U.id`;
 
     db.query(
         sql,
@@ -37,6 +69,7 @@ User.findById = (id, result) => {
 
 
 User.findByEmail = (email, result) => {
+    /*
     const sql = `
         SELECT
             id,
@@ -51,6 +84,38 @@ User.findByEmail = (email, result) => {
         WHERE
             email = ?
     `;
+    */
+    const sql = `
+        SELECT
+            U.id,
+            U.email,
+            U.name,
+            U.lastname,
+            U.phone,
+            U.image,
+            U.password,
+            json_arrayagg(
+                json_object(
+                    'id', CONVERT(R.id, char),
+                    'name', R.name,
+                    'image', R.image,
+                    'route', R.route)
+            ) as roles
+        FROM 
+            users as U
+        INNER JOIN
+            user_has_roles as UHR
+        ON
+            UHR.id_user = U.id
+        INNER JOIN
+            roles as R
+        ON 
+            UHR.id_rol = R.id
+        WHERE
+            email = ?
+        group by
+            U.id`;
+    
 
     db.query(
         sql,
@@ -67,6 +132,7 @@ User.findByEmail = (email, result) => {
             }
         }
     )
+    
 }
 
 
