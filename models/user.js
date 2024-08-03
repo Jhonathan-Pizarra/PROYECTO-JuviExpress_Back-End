@@ -21,7 +21,7 @@ User.findById = (id, result) => {
     */
     const sql = `
         SELECT
-            U.id,
+            CONVERT(U.id, char) as id,
             U.email,
             U.name,
             U.lastname,
@@ -46,7 +46,7 @@ User.findById = (id, result) => {
         ON 
             UHR.id_rol = R.id
         WHERE
-            id = ?
+            U.id = ?
         group by
             U.id`;
 
@@ -176,6 +176,79 @@ User.create = async (user, result) => {
             }
         }
     )
+}
+
+User.update = (user, result) => {
+    const sql = `
+        UPDATE
+            users
+        SET 
+            name = ?,
+            lastname = ?,
+            phone = ?,
+            image = ?,
+            updated_at = ?
+        WHERE
+            id = ?
+    `;
+
+    db.query(
+        sql,
+        [
+            user.name,
+            user.lastname,
+            user.phone,
+            user.image,
+            new Date(),
+            user.id
+        ],
+        (err, res)=> {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            }else{
+                console.log('Id del usuario actualizado: ', user.id);
+                result(null, user.id);
+            }
+        }
+    )
+
+}
+
+//Update no image
+User.updateWithoutImage = (user, result) => {
+    const sql = `
+        UPDATE
+            users
+        SET 
+            name = ?,
+            lastname = ?,
+            phone = ?,
+            updated_at = ?
+        WHERE
+            id = ?
+    `;
+
+    db.query(
+        sql,
+        [
+            user.name,
+            user.lastname,
+            user.phone,
+            new Date(),
+            user.id
+        ],
+        (err, res)=> {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            }else{
+                console.log('Id del usuario actualizado: ', user.id);
+                result(null, user.id);
+            }
+        }
+    )
+
 }
 
 module.exports = User;
