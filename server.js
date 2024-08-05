@@ -12,6 +12,7 @@ const multer = require('multer');
 //Importar rutas
 const userRoutes = require('./routes/userRoutes');
 const categoriesRoutes = require('./routes/categoryRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 
 const port = process.env.PORT || 3000;
@@ -40,6 +41,7 @@ const upload = multer({
 //Llamado a las rutas
 userRoutes(app, upload);
 categoriesRoutes(app);
+productRoutes(app, upload);
 
 server.listen(3000,'192.168.200.9' || 'localhost', function(){
     console.log('Aplicación JuviExpress Backend '+process.pid+' iniciada...')
