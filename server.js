@@ -61,3 +61,6 @@ app.use((err, req, res,next)=>{
     console.log(err);
     res.status(err.status || 500).send(err.stack);
 });
+
+//192.168.200.9
+//192.168.1.7
