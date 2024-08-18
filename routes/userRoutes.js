@@ -2,6 +2,8 @@ const userController = require('../controllers/usersController');
 const passport = require('passport');
 
 module.exports = (app, upload) => {
+
+    app.get('/api/users/findDeliveryMen', passport.authenticate('jwt', { session: false }), userController.findDeliveryMen);
     
     //Public
     app.post('/api/users/create', userController.register);

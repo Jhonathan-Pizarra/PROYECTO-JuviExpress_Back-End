@@ -8,6 +8,12 @@ const logger = require('morgan');
 const cors = require('cors');
 const passport = require('passport');
 const multer = require('multer');
+const io = require('socket.io')(server);
+
+/*
+* IMPORTAR SOCKETS
+*/
+const ordersSocket = require('./sockets/ordersSocket');
 
 //Importar rutas
 const userRoutes = require('./routes/userRoutes');
@@ -15,6 +21,8 @@ const categoriesRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');
 const addressRoutes = require('./routes/addressRoutes');
 const ordersRoutes = require('./routes/orderRoutes');
+
+
 
 const port = process.env.PORT || 3000;
 app.use(logger('dev'));
@@ -33,6 +41,11 @@ require('./config/passport')(passport);
 app.disable('x-powered-by');
 
 app.set('port',port);
+
+/*
+* LLAMADO A LOS SOCKETS
+*/
+ordersSocket(io);
 
 const upload = multer({
     storage: multer.memoryStorage()
