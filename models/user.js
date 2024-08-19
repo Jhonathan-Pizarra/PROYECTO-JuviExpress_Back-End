@@ -288,4 +288,6 @@ User.findDeliveryMen = (result) => {
     );
 }
 
+
+
 module.exports = User;

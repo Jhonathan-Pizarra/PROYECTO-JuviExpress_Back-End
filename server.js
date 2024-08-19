@@ -79,5 +79,14 @@ app.use((err, req, res,next)=>{
     res.status(err.status || 500).send(err.stack);
 });
 
+app.get('/',  (req, res) => {
+    res.send('Ruta raiz del backend');
+});
+
+
+module.exports = {
+    app: app,
+    server: server
+}
 //192.168.200.9
 //192.168.1.7

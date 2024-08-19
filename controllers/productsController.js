@@ -20,6 +20,23 @@ module.exports = {
         });
     },
 
+    findByNameAndCategory(req, res) {
+        const id_category = req.params.id_category;
+        const name = req.params.name;
+
+        Product.findByNameAndCategory(name, id_category, (err, data) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error al momento de listar las categorias',
+                    error: err
+                });
+            }
+
+            return res.status(201).json(data);
+        });
+    },
+
     create(req, res){
 
         const product = JSON.parse(req.body.product); //Capturo los datos que envie el cliente
