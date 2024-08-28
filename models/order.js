@@ -12,9 +12,10 @@ Order.create = (order, result) => {
             status,
             timestamp,
             created_at,
-            updated_at   
+            updated_at,
+            image   
         )
-    VALUES(?, ?, ?, ?, ?, ?)
+    VALUES(?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
@@ -26,6 +27,7 @@ Order.create = (order, result) => {
             Date.now(),
             new Date(),
             new Date(),
+            order.image
         ],
         (err, res) => {
             if (err) {
@@ -55,6 +57,7 @@ Order.findByStatus = (status, result) => {
         O.timestamp,
         O.lat,
         O.lng,
+        O.image,
         JSON_OBJECT(
             'id', CONVERT(A.id, char),
             'address', A.address,
@@ -145,6 +148,7 @@ Order.findByDeliveryAndStatus = (id_delivery, status, result) => {
         O.timestamp,
         O.lat,
         O.lng,
+        O.image,
         JSON_OBJECT(
             'id', CONVERT(A.id, char),
             'address', A.address,
@@ -238,6 +242,7 @@ Order.findByClientAndStatus = (id_client, status, result) => {
         O.timestamp,
         O.lat,
         O.lng,
+        O.image,
         JSON_OBJECT(
             'id', CONVERT(A.id, char),
             'address', A.address,
