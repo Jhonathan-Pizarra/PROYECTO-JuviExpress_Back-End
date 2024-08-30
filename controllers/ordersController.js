@@ -73,6 +73,8 @@ module.exports = {
                 d.client = JSON.parse(d.client);
                 d.delivery = JSON.parse(d.delivery);
                 d.products = JSON.parse(d.products);
+
+                //console.log('Que data trae');
             }
             
             
@@ -143,7 +145,7 @@ module.exports = {
 
 
 
-            Order.create(order, (err,data) =>{
+            Order.create(order, async (err,id) =>{
 
                 if (err) {
                     return res.status(501).json({
@@ -153,14 +155,27 @@ module.exports = {
                     });
                 }
 
-                order.id = `${data}`;
+                for (const product of order.products) {
+                    await OrderHasProducts.create(id, product.id, product.quantity, (err, id_data) => {
+                        if (err) {
+                            return res.status(501).json({
+                                success: false,
+                                message: 'Hubo un error con la creacion de los productos en la orden',
+                                error: err
+                            });
+                        }
+                    });
+                }
+
+                //order.id = `${data}`;
                 //print("Temos id?"+order.id);
 
 
                 return res.status(201).json({
                     success: true,
                     message: 'El registro se realizó correctamente',
-                    data: order //El id del order que se registró
+                    data: `${id}` //El id del order que se registró
+                    //data: order //El id del order que se registró
                 });
 
                 //const token = jwt.sign({id: user.id, email: user.email}, keys.secretOrKey,{});
