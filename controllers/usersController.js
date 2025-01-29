@@ -7,6 +7,53 @@ const storage = require('../utils/cloud_storage');
 
 module.exports = {
 
+    //Traer todos los usuarios - V1
+    /*
+    getAllUsers(req, res) {
+        User.findAll((err, users) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error al obtener los usuarios',
+                    error: err
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                message: 'Usuarios obtenidos correctamente',
+                data: users
+            });
+        });
+    },
+    */
+
+    //Traer todos los usuarios - V2
+    getAllUsers(req, res) {
+        User.findAll((err, users) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error al obtener los usuarios',
+                    error: err
+                });
+            }
+    
+            // Parsear los roles para que sean objetos y no cadenas
+            users.forEach(user => {
+                user.roles = JSON.parse(user.roles); // Convertir de string a objeto
+            });
+    
+            return res.status(200).json({
+                success: true,
+                message: 'Usuarios obtenidos correctamente',
+                data: users
+            });
+        });
+    },
+        
+    
+    // Otros métodos...
     findDeliveryMen(req, res) {
         User.findDeliveryMen((err, data) => {
             if (err) {
@@ -21,6 +68,7 @@ module.exports = {
             return res.status(201).json(data);
         });
     },
+   
 
     login(req,res){
 
@@ -231,6 +279,10 @@ module.exports = {
         });
     },
 
+
+    
+    
+    
     
 
 }

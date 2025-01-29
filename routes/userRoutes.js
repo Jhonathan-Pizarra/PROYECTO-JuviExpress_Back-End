@@ -4,6 +4,8 @@ const passport = require('passport');
 module.exports = (app, upload) => {
 
     app.get('/api/users/findDeliveryMen', passport.authenticate('jwt', { session: false }), userController.findDeliveryMen);
+    // Nueva ruta para obtener todos los usuarios
+    app.get('/api/users', passport.authenticate('jwt', { session: false }), userController.getAllUsers);  // Este es el nuevo endpoint
     
     //Public
     app.post('/api/users/create', userController.register);
