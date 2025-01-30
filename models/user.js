@@ -330,5 +330,18 @@ User.findAll = (result) => {
     });
 }
 
+User.updateWithRol = (user, callback) => {
+    const sql = `
+        UPDATE users
+        SET email = ?, name = ?, lastname = ?, phone = ?, image = ?, password = ?, updated_at = NOW()
+        WHERE id = ?
+    `;
+    db.query(
+        sql,
+        [user.email, user.name, user.lastname, user.phone, user.image, user.password, user.id],
+        callback
+    );
+};
+
 
 module.exports = User;

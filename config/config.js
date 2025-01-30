@@ -11,4 +11,6 @@ db.connect(function(err) {
     console.log('DATABASE CONNETED!');
 });
 
+
+
 module.exports = db;

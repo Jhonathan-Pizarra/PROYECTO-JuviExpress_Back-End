@@ -4,31 +4,13 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const storage = require('../utils/cloud_storage');
+const db = require('../config/config');  
+
 
 module.exports = {
+  
 
-    //Traer todos los usuarios - V1
-    /*
-    getAllUsers(req, res) {
-        User.findAll((err, users) => {
-            if (err) {
-                return res.status(501).json({
-                    success: false,
-                    message: 'Hubo un error al obtener los usuarios',
-                    error: err
-                });
-            }
-
-            return res.status(200).json({
-                success: true,
-                message: 'Usuarios obtenidos correctamente',
-                data: users
-            });
-        });
-    },
-    */
-
-    //Traer todos los usuarios - V2
+    //Traer todos los usuarios 
     getAllUsers(req, res) {
         User.findAll((err, users) => {
             if (err) {
@@ -280,8 +262,70 @@ module.exports = {
     },
 
 
+    async  updateWithRoles(req, res) {
+        const { user, roles } = req.body;
     
+        if (!user || !roles || !Array.isArray(roles)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Datos inválidos. Asegúrate de enviar el usuario y un arreglo de roles.'
+            });
+        }
     
+        try {
+            // Actualizar la información del usuario
+            User.update(user, (err, result) => {
+                if (err) {
+                    return res.status(501).json({
+                        success: false,
+                        message: 'Error al actualizar el usuario.',
+                        error: err
+                    });
+                }
+    
+                // Eliminar roles actuales del usuario
+                Rol.deleteUserRoles(user.id, (err) => {
+                    if (err) {
+                        return res.status(501).json({
+                            success: false,
+                            message: 'Error al eliminar los roles del usuario.',
+                            error: err
+                        });
+                    }
+    
+                    // Insertar nuevos roles
+                    for (const role of roles) {
+                        Rol.createUserRole(user.id, role.id, (err) => {
+                            if (err) {
+                                return res.status(501).json({
+                                    success: false,
+                                    message: 'Error al asignar nuevos roles al usuario.',
+                                    error: err
+                                });
+                            }
+                        });
+                    }
+    
+                    return res.status(200).json({
+                        success: true,
+                        message: 'Usuario y roles actualizados correctamente.'
+                    });
+                });
+            });
+    
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({
+                success: false,
+                message: 'Error interno del servidor.',
+                error: err
+            });
+        }
+    }
+
+    
+   
+ 
     
     
 

@@ -35,5 +35,22 @@ Rol.create = (id_user, id_rol, result) => {
 
 };
 
+Rol.deleteUserRoles = (userId, callback) => {
+    const sql = `
+        DELETE FROM user_has_roles
+        WHERE id_user = ?
+    `;
+    db.query(sql, [userId], callback);
+};
+
+Rol.createUserRole = (userId, roleId, callback) => {
+    const sql = `
+        INSERT INTO user_has_roles (id_user, id_rol, created_at, updated_at)
+        VALUES (?, ?, NOW(), NOW())
+    `;
+    db.query(sql, [userId, roleId], callback);
+};
+
+
 module.exports = Rol;
 
