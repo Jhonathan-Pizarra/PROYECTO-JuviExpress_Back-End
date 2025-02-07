@@ -20,5 +20,7 @@ module.exports = (app, upload) => {
     //Private
     app.put('/api/users/updateWithImage', passport.authenticate('jwt', {session:false}), upload.array('image', 1), userController.UpdateWithImage);
     app.put('/api/users/updateWithoutImage', passport.authenticate('jwt', {session:false}), userController.UpdateWithoutImage);
-   
+
+    app.put('/api/users/updateNotificationToken', passport.authenticate('jwt', {session:false}), userController.updateNotificationToken);
+
 }

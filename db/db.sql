@@ -5,6 +5,7 @@ create table users(
     email varchar(180) not null unique,
     name varchar(90) not null,
     lastname varchar(90) not null,
+    notification_token varchar(255),
     phone varchar(20) not null unique,
     image varchar(255) null,
     password varchar(90) not null,
@@ -23,13 +24,16 @@ create table roles(
 );
 
 insert into roles(name, route, created_at, updated_at) 
-values('Administrador', '/admin/orders/list','2024-08-28', '2024-08-28');
+values('Administrador', '/admin/home','2024-12-31', '2025-01-01');
+/*values('Administrador', '/admin/orders/list','2024-08-28', '2024-08-28');*/
 
 insert into roles(name, route, created_at, updated_at) 
-values('Repartidor', '/delivery/orders/list','2024-08-28', '2024-08-28');
+values('Repartidor', '/delivery/home','2024-12-31', '2025-01-01');
+/*values('Repartidor', '/delivery/orders/list','2024-08-28', '2024-08-28');*/
 
 insert into roles(name, route, created_at, updated_at) 
-values('Cliente', '/client/products/list','2024-08-28', '2024-08-28');
+values('Cliente', '/client/home','2024-12-31', '2025-01-01');
+/*values('Cliente', '/client/products/list','2024-08-28', '2024-08-28');*/
 
 /*
 create table user_has_roles(

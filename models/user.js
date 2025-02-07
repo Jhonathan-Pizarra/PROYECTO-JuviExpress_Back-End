@@ -28,6 +28,7 @@ User.findById = (id, result) => {
             U.phone,
             U.image,
             U.password,
+            U.notification_token,
             json_arrayagg(
                 json_object(
                     'id', CONVERT(R.id, char),
@@ -343,5 +344,38 @@ User.updateWithRol = (user, callback) => {
     );
 };
 
+
+//Notificaiion push
+User.updateNotificationToken = (id, token, result) => {
+
+    const sql = `
+    UPDATE
+        users
+    SET
+        notification_token = ?,
+        updated_at = ?
+    WHERE
+        id = ?
+    `;
+
+    db.query
+    (
+        sql,
+        [
+            token,
+            new Date(),
+            id
+        ],
+        (err, res) => {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            }
+            else {
+                result(null, id);
+            }
+        }
+    )
+}
 
 module.exports = User;
